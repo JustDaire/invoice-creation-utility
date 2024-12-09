@@ -91,6 +91,8 @@ export default function Home() {
       },
     ],
     description: "",
+    subtotal: 0.0,
+    total: 0.0,
   });
 
   /**
@@ -423,6 +425,17 @@ export default function Home() {
             >
               +
             </Button>
+          </div>
+        </div>
+        {/* Subtotals */}
+        <div className="flex justify-end gap-4">
+          <div className="gap-4">
+            <p className="font-bold">Subtotal:</p>
+            <p className="font-bold">Total:</p>
+          </div>
+          <div className="gap-4">
+            <p>€{formData.subtotal}</p>
+            <p>€{formData.total}</p>
           </div>
         </div>
         {/* Invoice notes */}
