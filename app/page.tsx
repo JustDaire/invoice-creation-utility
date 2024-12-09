@@ -12,6 +12,7 @@ import {
   getKeyValue,
 } from "@nextui-org/table";
 import React, { Key, useState } from "react";
+import { Divider } from "@nextui-org/divider";
 
 type Column = {
   key: string;
@@ -368,6 +369,7 @@ export default function Home() {
             />
           </div>
         </div>
+        <Divider />
         <div className="grid grid-cols-3 gap-4">
           {/* Invoice Number */}
           <div className="grid gap-4">
@@ -393,6 +395,7 @@ export default function Home() {
             Due Date
           </div>
         </div>
+        <Divider />
         {/* Invoice items */}
         <div className="grid grid-cols-1 gap-4">
           <div className="grid gap-4">
@@ -427,6 +430,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
+        <Divider />
         {/* Subtotals */}
         <div className="flex justify-end gap-4">
           <div className="gap-4">
@@ -438,6 +442,7 @@ export default function Home() {
             <p>€{formData.total}</p>
           </div>
         </div>
+        <Divider />
         {/* Invoice notes */}
         <div className="grid grid-cols-1 gap-4">
           <div className="grid gap-4">
