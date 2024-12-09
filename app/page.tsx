@@ -2,6 +2,15 @@
 
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue,
+} from "@nextui-org/table";
 import React, { useState } from "react";
 
 type Column = {
@@ -261,37 +270,24 @@ export default function Home() {
         {/* Invoice items */}
         <div className="grid grid-cols-1 gap-4">
           <div className="grid gap-4">
-            <table>
-              <thead>
-                <tr>
-                  <th>Action</th>
-                  <th>Description</th>
-                  <th>Rate</th>
-                  <th>Quantity</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>
-                    <button>x</button>
-                  </td>
-                  <td>Item 1</td>
-                  <td>1</td>
-                  <td>100</td>
-                  <td>100</td>
-                </tr>
-                <tr>
-                  <td>
-                    <button>x</button>
-                  </td>
-                  <td>Item 2</td>
-                  <td>1</td>
-                  <td>200</td>
-                  <td>200</td>
-                </tr>
-              </tbody>
-            </table>
+            <Table removeWrapper>
+              <TableHeader columns={columns}>
+                {(column) => (
+                  <TableColumn key={column.key} aria-label={column.label}>
+                    {column.label}
+                  </TableColumn>
+                )}
+              </TableHeader>
+              <TableBody items={formData.invoiceItems}>
+                {(item) => (
+                  <TableRow key={item.key}>
+                    {(columnKey) => (
+                      <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                    )}
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
         </div>
         {/* Invoice notes */}
