@@ -23,6 +23,34 @@ type InvoiceItem = {
   amount: number;
 };
 
+const columns = [
+  {
+    key: "actions",
+    label: "ACTIONS",
+    type: "text",
+  },
+  {
+    key: "description",
+    label: "DESCRIPTION",
+    type: "text",
+  },
+  {
+    key: "rate",
+    label: "RATE",
+    type: "number",
+  },
+  {
+    key: "quantity",
+    label: "QUANTITY",
+    type: "number",
+  },
+  {
+    key: "amount",
+    label: "AMOUNT",
+    type: "number",
+  },
+];
+
 export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
