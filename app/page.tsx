@@ -230,7 +230,20 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-3 gap-4">
           {/* Invoice Number */}
-          <div className="grid gap-4">Invoice Number</div>
+          <div className="grid gap-4">
+            <Input
+              aria-label="Invoice Number"
+              label="Invoice Number"
+              type="text"
+              value={formData.invoiceNumber}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  invoiceNumber: e.target.value,
+                })
+              }
+            />
+          </div>
           {/* Invoice Date Picker */}
           <div className="grid gap-4">Invoice Date</div>
           {/* Terms Selector */}
