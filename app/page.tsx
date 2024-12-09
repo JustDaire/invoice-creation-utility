@@ -306,10 +306,16 @@ export default function Home() {
           </div>
         </div>
         {/* Invoice actions */}
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="grid gap-4">
-            <button type="submit">Generate</button>
-            <button>Reset</button>
+            <Button aria-label="Submit" color="default" type="submit">
+              Generate
+            </Button>
+          </div>
+          <div className="grid gap-4">
+            <Button aria-label="Submit" color="danger">
+              Reset
+            </Button>
           </div>
         </div>
       </form>
