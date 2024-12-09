@@ -118,17 +118,22 @@ export default function Home() {
               aria-label={columnKey as string}
               className="px-0 mx-3"
               type={getInputType(columnKey)}
-              // value={formData.company.name}
-              value={String(cellValue)}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  invoiceItems: formData.invoiceItems.map((item, i) =>
-                    i === index
-                      ? { ...item, [columnKey as string]: e.target.value }
-                      : item
-                  ),
-                })
+              value={
+                getInputType(columnKey) === "number"
+                  ? Number(cellValue)
+                  : String(cellValue)
+              }
+              // value={String(cellValue)}
+              onChange={
+                (e: any) => inputChangeHandler(e, columnKey, index)
+                // setFormData({
+                //   ...formData,
+                //   invoiceItems: formData.invoiceItems.map((item, i) =>
+                //     i === index
+                //       ? { ...item, [columnKey as string]: e.target.value }
+                //       : item
+                //   ),
+                // })
               }
             />
           );
@@ -193,6 +198,12 @@ export default function Home() {
    */
   const getInputType = (key: Key) => {
     return columns.find((a) => a.key === key)?.type ?? "";
+  };
+
+  const inputChangeHandler = (e: any, columnKey: React.Key, index: number) => {
+    console.log("e:", e);
+    console.log("columnKey:", columnKey);
+    console.log("index:", index);
   };
 
   return (
