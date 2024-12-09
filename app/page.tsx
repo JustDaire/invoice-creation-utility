@@ -66,6 +66,8 @@ const columns = [
 export default function Home() {
   const [formData, setFormData] = useState({
     invoiceNumber: "INV0001",
+    invoiceDate: "",
+    invoiceDueDate: "",
     company: {
       name: "",
       email: "",
