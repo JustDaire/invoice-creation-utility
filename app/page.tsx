@@ -67,47 +67,63 @@ const columns = [
 
 const termPeriods = [
   {
-    name: "None",
+    key: "none",
+    label: "None",
     value: null,
   },
   {
-    name: "7 days",
+    key: "7days",
+    label: "7 days",
     value: 7,
   },
   {
-    name: "10 days",
+    key: "10days",
+    label: "10 days",
     value: 10,
   },
   {
-    name: "21 days",
+    key: "14days",
+    label: "14 days",
+    value: 14,
+  },
+  {
+    key: "21days",
+    label: "21 days",
     value: 21,
   },
   {
-    name: "30 days",
+    key: "30days",
+    label: "30 days",
     value: 30,
   },
   {
-    name: "45 days",
+    key: "45days",
+    label: "45 days",
     value: 45,
   },
   {
-    name: "60 days",
+    key: "60days",
+    label: "60 days",
     value: 60,
   },
   {
-    name: "90 days",
+    key: "90days",
+    label: "90 days",
     value: 90,
   },
   {
-    name: "120 days",
+    key: "120days",
+    label: "120 days",
     value: 120,
   },
   {
-    name: "180 days",
+    key: "180days",
+    label: "180 days",
     value: 180,
   },
   {
-    name: "365 days",
+    key: "365days",
+    label: "365 days",
     value: 365,
   },
 ];
