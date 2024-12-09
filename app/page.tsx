@@ -82,11 +82,16 @@ export default function Home() {
     description: "",
   });
 
+  const generateInvoice = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+    console.log("formData", formData);
+  };
+
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       {/* Main grid */}
-      {/*  onSubmit={handleSubmit} */}
-      <form className="grid gap-4">
+      {/*   */}
+      <form className="grid gap-4" onSubmit={generateInvoice}>
         <div className="grid grid-cols-2 gap-4 flex items-start">
           {/* Issuer details */}
           <div className="grid gap-4">
