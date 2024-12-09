@@ -111,6 +111,31 @@ export default function Home() {
     []
   );
 
+  /**
+   * Adds a new row to the invoice items in the form data.
+   * The new row will have a unique key, an empty description, a rate of 0,
+   * a quantity of 1, and an amount of 0.
+   * Updates the form data state with the new row added to the invoice items array.
+   */
+  const addRow = () => {
+    const newRow = {
+      key: String(formData.invoiceItems.length + 1),
+      description: "",
+      rate: 0,
+      quantity: 1,
+      amount: 0,
+    };
+
+    const array = formData.invoiceItems;
+
+    array.push(newRow);
+
+    setFormData({
+      ...formData,
+      invoiceItems: array,
+    });
+  };
+
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("formData", formData);
@@ -308,6 +333,15 @@ export default function Home() {
                 )}
               </TableBody>
             </Table>
+
+            <Button
+              isIconOnly
+              aria-label="Add"
+              color="default"
+              onClick={addRow}
+            >
+              +
+            </Button>
           </div>
         </div>
         {/* Invoice notes */}
