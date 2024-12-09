@@ -103,6 +103,7 @@ export default function Home() {
                 isIconOnly
                 aria-label="Delete"
                 color="danger"
+                isDisabled={formData.invoiceItems.length === 1}
                 onClick={() => removeRow(Number(invoiceItem.key))}
               >
                 X
