@@ -1,5 +1,7 @@
+"use client";
+
 import { Button } from "@nextui-org/button";
-import React from "react";
+import React, { useState } from "react";
 
 type Column = {
   key: string;
@@ -52,6 +54,33 @@ const columns = [
 ];
 
 export default function Home() {
+  const [formData, setFormData] = useState({
+    invoiceNumber: "INV0001",
+    company: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      vat_number: "",
+    },
+    client: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    },
+    invoiceItems: [
+      {
+        key: "1",
+        description: "",
+        rate: 0,
+        quantity: 1,
+        amount: 0,
+      },
+    ],
+    description: "",
+  });
+
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       {/* Main grid */}
