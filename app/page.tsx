@@ -99,7 +99,12 @@ export default function Home() {
         case "actions":
           return (
             <div className="relative flex items-center gap-2">
-              <Button isIconOnly aria-label="Delete" color="danger">
+              <Button
+                isIconOnly
+                aria-label="Delete"
+                color="danger"
+                onClick={() => removeRow(Number(invoiceItem.key))}
+              >
                 X
               </Button>
             </div>
@@ -136,6 +141,24 @@ export default function Home() {
     });
   };
 
+  /**
+   * Removes a row from the invoice items based on the provided row index.
+   *
+   * @param {number} rowIndex - The index of the row to be removed.
+   *
+   * This function filters out the row from the `invoiceItems` array in the
+   * `formData` state, and updates the state with the new array.
+   */
+  const removeRow = (rowIndex: number) => {
+    const array = formData.invoiceItems.filter(
+      (a) => a.key !== String(rowIndex)
+    );
+
+    setFormData({
+      ...formData,
+      invoiceItems: array,
+    });
+  };
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("formData", formData);
