@@ -14,6 +14,7 @@ import {
 import React, { Key, useState } from "react";
 import { Divider } from "@nextui-org/divider";
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { DatePicker } from "@nextui-org/date-picker";
 
 type Column = {
   key: string;
@@ -159,6 +160,7 @@ export default function Home() {
     subtotal: 0.0,
     total: 0.0,
   });
+  const [term, setTerm] = React.useState<string>("");
 
   /**
    * Renders a cell in the invoice table based on the column key.
@@ -451,16 +453,25 @@ export default function Home() {
             />
           </div>
           {/* Invoice Date Picker */}
-          <div className="grid gap-4">Invoice Date</div>
+          <div className="grid gap-4">
+            <DatePicker className="" label="Date" />
+          </div>
           {/* Terms Selector */}
           <div className="grid gap-4">
-            <Select aria-label="Terms" className="max-w-xs" label="Terms">
+            <Select
+              aria-label="Terms"
+              className="max-w-xs"
+              selectedKeys={term}
+              label="Terms"
+              onChange={(e) => setTerm(e.target.value)}
+            >
               {termPeriods.map((term) => (
                 <SelectItem key={term.key}>{term.label}</SelectItem>
               ))}
             </Select>
-            <br />
-            Due Date
+            {term}
+            {term && termPeriods.find((a) => a.key === term)?.value}
+            <DatePicker className="" label="Date" />
           </div>
         </div>
         <Divider />
