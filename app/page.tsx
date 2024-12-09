@@ -93,6 +93,13 @@ export default function Home() {
     description: "",
   });
 
+  /**
+   * Renders a cell in the invoice table based on the column key.
+   *
+   * @param {InvoiceItem} invoiceItem - The invoice item data for the current row.
+   * @param {React.Key} columnKey - The key of the column to render.
+   * @returns {React.ReactNode} The rendered cell content.
+   */
   const renderCell = React.useCallback(
     (invoiceItem: InvoiceItem, columnKey: React.Key, index: number) => {
       const cellValue = invoiceItem[columnKey as keyof InvoiceItem];
@@ -185,6 +192,12 @@ export default function Home() {
       invoiceItems: array,
     });
   };
+
+  /**
+   * Generates an invoice based on the form data.
+   *
+   * @param e - The event object that triggered the function, which includes a preventDefault method to stop the default form submission behavior.
+   */
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("formData", formData);
@@ -200,6 +213,7 @@ export default function Home() {
     return columns.find((a) => a.key === key)?.type ?? "";
   };
 
+  /** For logging, will be removed */
   const inputChangeHandler = (e: any, columnKey: React.Key, index: number) => {
     console.log("e:", e);
     console.log("columnKey:", columnKey);
