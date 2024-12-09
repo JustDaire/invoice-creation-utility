@@ -11,7 +11,7 @@ import {
   TableCell,
   getKeyValue,
 } from "@nextui-org/table";
-import React, { useState } from "react";
+import React, { Key, useState } from "react";
 
 type Column = {
   key: string;
@@ -92,7 +92,7 @@ export default function Home() {
   });
 
   const renderCell = React.useCallback(
-    (invoiceItem: InvoiceItem, columnKey: React.Key) => {
+    (invoiceItem: InvoiceItem, columnKey: React.Key, index: number) => {
       const cellValue = invoiceItem[columnKey as keyof InvoiceItem];
 
       switch (columnKey) {
@@ -111,7 +111,25 @@ export default function Home() {
             </div>
           );
         default:
-          return cellValue;
+          return (
+            <Input
+              aria-label={columnKey as string}
+              className="px-0 mx-3"
+              type={getInputType(columnKey)}
+              // value={formData.company.name}
+              value={String(cellValue)}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  invoiceItems: formData.invoiceItems.map((item, i) =>
+                    i === index
+                      ? { ...item, [columnKey as string]: e.target.value }
+                      : item
+                  ),
+                })
+              }
+            />
+          );
       }
     },
     []
@@ -163,6 +181,16 @@ export default function Home() {
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("formData", formData);
+  };
+
+  /**
+   * Retrieves the input type for a given key from the columns array.
+   *
+   * @param {Key} key - The key to search for in the columns array.
+   * @returns {string} - The input type associated with the key, or "" if the key is not found.
+   */
+  const getInputType = (key: Key) => {
+    return columns.find((a) => a.key === key)?.type ?? "";
   };
 
   return (
@@ -351,7 +379,9 @@ export default function Home() {
                 {(item) => (
                   <TableRow key={item.key}>
                     {(columnKey) => (
-                      <TableCell>{renderCell(item, columnKey)}</TableCell>
+                      <TableCell>
+                        {renderCell(item, columnKey, Number(item.key))}
+                      </TableCell>
                     )}
                   </TableRow>
                 )}
