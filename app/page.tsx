@@ -13,6 +13,7 @@ import {
 } from "@nextui-org/table";
 import React, { Key, useState } from "react";
 import { Divider } from "@nextui-org/divider";
+import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 
 type Column = {
   key: string;
@@ -61,6 +62,53 @@ const columns = [
     key: "amount",
     label: "AMOUNT",
     type: "number",
+  },
+];
+
+const termPeriods = [
+  {
+    name: "None",
+    value: null,
+  },
+  {
+    name: "7 days",
+    value: 7,
+  },
+  {
+    name: "10 days",
+    value: 10,
+  },
+  {
+    name: "21 days",
+    value: 21,
+  },
+  {
+    name: "30 days",
+    value: 30,
+  },
+  {
+    name: "45 days",
+    value: 45,
+  },
+  {
+    name: "60 days",
+    value: 60,
+  },
+  {
+    name: "90 days",
+    value: 90,
+  },
+  {
+    name: "120 days",
+    value: 120,
+  },
+  {
+    name: "180 days",
+    value: 180,
+  },
+  {
+    name: "365 days",
+    value: 365,
   },
 ];
 
@@ -390,7 +438,9 @@ export default function Home() {
           <div className="grid gap-4">Invoice Date</div>
           {/* Terms Selector */}
           <div className="grid gap-4">
-            Terms
+            <Select className="max-w-xs" items={termPeriods} label="Terms">
+              {(term) => <SelectItem>{term.name}</SelectItem>}
+            </Select>
             <br />
             Due Date
           </div>
