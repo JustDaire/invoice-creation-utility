@@ -454,8 +454,10 @@ export default function Home() {
           <div className="grid gap-4">Invoice Date</div>
           {/* Terms Selector */}
           <div className="grid gap-4">
-            <Select className="max-w-xs" items={termPeriods} label="Terms">
-              {(term) => <SelectItem>{term.name}</SelectItem>}
+            <Select aria-label="Terms" className="max-w-xs" label="Terms">
+              {termPeriods.map((term) => (
+                <SelectItem key={term.key}>{term.label}</SelectItem>
+              ))}
             </Select>
             <br />
             Due Date
