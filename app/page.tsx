@@ -91,6 +91,26 @@ export default function Home() {
     description: "",
   });
 
+  const renderCell = React.useCallback(
+    (invoiceItem: InvoiceItem, columnKey: React.Key) => {
+      const cellValue = invoiceItem[columnKey as keyof InvoiceItem];
+
+      switch (columnKey) {
+        case "actions":
+          return (
+            <div className="relative flex items-center gap-2">
+              <Button isIconOnly aria-label="Delete" color="danger">
+                X
+              </Button>
+            </div>
+          );
+        default:
+          return cellValue;
+      }
+    },
+    []
+  );
+
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("formData", formData);
@@ -282,7 +302,7 @@ export default function Home() {
                 {(item) => (
                   <TableRow key={item.key}>
                     {(columnKey) => (
-                      <TableCell>{getKeyValue(item, columnKey)}</TableCell>
+                      <TableCell>{renderCell(item, columnKey)}</TableCell>
                     )}
                   </TableRow>
                 )}
