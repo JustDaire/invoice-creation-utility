@@ -291,7 +291,19 @@ export default function Home() {
         </div>
         {/* Invoice notes */}
         <div className="grid grid-cols-1 gap-4">
-          <div className="grid gap-4">Notes</div>
+          <div className="grid gap-4">
+            <Textarea
+              label="Notes"
+              placeholder="Enter your description"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  description: e.target.value,
+                })
+              }
+            />
+          </div>
         </div>
         {/* Invoice actions */}
         <div className="grid grid-cols-1 gap-4">
