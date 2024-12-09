@@ -1,11 +1,34 @@
 import { Button } from "@nextui-org/button";
 import React from "react";
 
+type Column = {
+  key: string;
+  label: string;
+  type: "text" | "number";
+};
+
+type Comppany = {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  vat_number: string;
+};
+
+type InvoiceItem = {
+  key: string;
+  description: string;
+  rate: number;
+  quantity: number;
+  amount: number;
+};
+
 export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
       {/* Main grid */}
       <div>
+        {/*  onSubmit={handleSubmit} */}
         <form className="grid gap-4">
           <div className="grid grid-cols-2 gap-4 flex items-start">
             {/* Issuer details */}
