@@ -42,7 +42,7 @@ type InvoiceItem = {
 const columns = [
   {
     key: "actions",
-    label: "ACTIONS",
+    label: "",
     type: "text",
   },
   {
