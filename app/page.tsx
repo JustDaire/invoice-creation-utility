@@ -177,15 +177,15 @@ export default function Home() {
       switch (columnKey) {
         case "actions":
           return (
-              <Button
-                isIconOnly
-                aria-label="Delete"
-                color="danger"
-                isDisabled={formData.invoiceItems.length === 1}
-                onClick={() => removeRow(Number(invoiceItem.key))}
-              >
+            <Button
+              isIconOnly
+              aria-label="Delete"
+              color="danger"
+              isDisabled={formData.invoiceItems.length === 1}
+              onClick={() => removeRow(Number(invoiceItem.key))}
+            >
               <MdDelete size={24} />
-              </Button>
+            </Button>
           );
         default:
           return (
