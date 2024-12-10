@@ -151,7 +151,7 @@ export default function Home() {
     invoiceItems: [
       {
         key: "1",
-        description: "",
+        description: "Item 1",
         rate: 0,
         quantity: 1,
         amount: 0,
