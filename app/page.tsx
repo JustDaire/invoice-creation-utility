@@ -191,27 +191,13 @@ export default function Home() {
           );
         default:
           return (
-            <Input
-              aria-label={columnKey as string}
-              className="px-0 mx-3"
+            <TableCellInput
               type={getInputType(columnKey)}
-              value={
-                getInputType(columnKey) === "number"
-                  ? Number(cellValue)
-                  : String(cellValue)
-              }
-              // value={String(cellValue)}
-              onChange={
-                (e: any) => inputChangeHandler(e, columnKey, index)
-                // setFormData({
-                //   ...formData,
-                //   invoiceItems: formData.invoiceItems.map((item, i) =>
-                //     i === index
-                //       ? { ...item, [columnKey as string]: e.target.value }
-                //       : item
-                //   ),
-                // })
-              }
+              value={String(cellValue)}
+              onChange={(newValue) => {
+                // Logic to update local state with the new value
+                UpdateCell(newValue, index, columnKey);
+              }}
             />
           );
       }
