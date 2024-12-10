@@ -15,6 +15,7 @@ import React, { Key, useState } from "react";
 import { Divider } from "@nextui-org/divider";
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 import { DatePicker } from "@nextui-org/date-picker";
+import { MdAdd, MdDelete } from "react-icons/md";
 
 type Column = {
   key: string;
@@ -184,7 +185,7 @@ export default function Home() {
                 isDisabled={formData.invoiceItems.length === 1}
                 onClick={() => removeRow(Number(invoiceItem.key))}
               >
-                X
+              <MdDelete size={24} />
               </Button>
             </div>
           );
@@ -505,7 +506,7 @@ export default function Home() {
               color="default"
               onClick={addRow}
             >
-              +
+              <MdAdd size={24} />
             </Button>
           </div>
         </div>
