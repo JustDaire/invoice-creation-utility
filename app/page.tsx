@@ -177,7 +177,6 @@ export default function Home() {
       switch (columnKey) {
         case "actions":
           return (
-            <div className="relative flex items-center gap-2">
               <Button
                 isIconOnly
                 aria-label="Delete"
@@ -187,7 +186,6 @@ export default function Home() {
               >
               <MdDelete size={24} />
               </Button>
-            </div>
           );
         default:
           return (
