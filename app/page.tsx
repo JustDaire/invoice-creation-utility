@@ -283,11 +283,25 @@ export default function Home() {
     return columns.find((a) => a.key === key)?.type ?? "";
   };
 
-  /** For logging, will be removed */
-  const inputChangeHandler = (e: any, columnKey: React.Key, index: number) => {
-    console.log("e:", e);
-    console.log("columnKey:", columnKey);
-    console.log("index:", index);
+  const TableCellInput = ({
+    value,
+    onChange,
+    type,
+  }: {
+    value: string;
+    onChange: (value: string) => void;
+    type?: string;
+  }) => {
+    const [inputValue, setInputValue] = React.useState(value);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setInputValue(e.target.value);
+      onChange(e.target.value);
+    };
+
+    return (
+      <Input type={type} value={inputValue} onChange={handleInputChange} />
+    );
   };
 
   return (
