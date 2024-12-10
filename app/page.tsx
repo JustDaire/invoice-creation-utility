@@ -483,8 +483,8 @@ export default function Home() {
             <Select
               aria-label="Terms"
               className="max-w-xs"
-              selectedKeys={term}
               label="Terms"
+              selectedKeys={term}
               onChange={(e) => setTerm(e.target.value)}
             >
               {termPeriods.map((term) => (
