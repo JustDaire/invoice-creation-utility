@@ -220,6 +220,29 @@ export default function Home() {
   );
 
   /**
+   * Updates a specific cell in the invoice items form data.
+   *
+   * @param value - The new value to be set in the cell.
+   * @param index - The index of the invoice item to be updated.
+   * @param columnKey - The key of the column to be updated.
+   */
+  const UpdateCell = (value: any, index: number, columnKey: Key) => {
+    const invoiceItemsUpdated = [...formData.invoiceItems];
+    const invoiceItem = invoiceItemsUpdated.find(
+      (a) => a.key === String(index)
+    );
+
+    if (invoiceItem) {
+      (invoiceItem as any)[columnKey as string] = value;
+    }
+
+    setFormData({
+      ...formData,
+      invoiceItems: invoiceItemsUpdated,
+    });
+  };
+
+  /**
    * Adds a new row to the invoice items in the form data.
    * The new row will have a unique key, an empty description, a rate of 0,
    * a quantity of 1, and an amount of 0.
