@@ -493,9 +493,10 @@ export default function Home() {
             >
               {(term) => <SelectItem>{term.label}</SelectItem>}
             </Select>
-            {term}
-            {term && termPeriods.find((a) => a.key === term)?.value}
-            <DatePicker className="" label="Date" />
+            {term.size !== 0 && term !== "none" ? (
+              <DatePicker className="" label="Date" />
+            ) : null}
+            {/* {term && termPeriods.find((a) => a.key === term)?.value} */}
           </div>
         </div>
         <Divider />
