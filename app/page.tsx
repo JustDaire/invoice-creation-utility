@@ -1,5 +1,7 @@
 "use client";
 
+import type { Selection } from "@nextui-org/react";
+
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
 import {
@@ -13,7 +15,7 @@ import {
 } from "@nextui-org/table";
 import React, { Key, useState } from "react";
 import { Divider } from "@nextui-org/divider";
-import { Select, SelectSection, SelectItem } from "@nextui-org/select";
+import { Select, SelectItem } from "@nextui-org/select";
 import { DatePicker } from "@nextui-org/date-picker";
 import { MdAdd, MdDelete } from "react-icons/md";
 
@@ -161,7 +163,8 @@ export default function Home() {
     subtotal: 0.0,
     total: 0.0,
   });
-  const [term, setTerm] = React.useState<string>("");
+  const [term, setTerm] = React.useState<Selection>(new Set([]));
+
 
   /**
    * Renders a cell in the invoice table based on the column key.
@@ -482,14 +485,13 @@ export default function Home() {
           <div className="grid gap-4">
             <Select
               aria-label="Terms"
-              className="max-w-xs"
+              items={termPeriods}
               label="Terms"
+              placeholder="Select a term"
               selectedKeys={term}
-              onChange={(e) => setTerm(e.target.value)}
+              onSelectionChange={setTerm}
             >
-              {termPeriods.map((term) => (
-                <SelectItem key={term.key}>{term.label}</SelectItem>
-              ))}
+              {(term) => <SelectItem>{term.label}</SelectItem>}
             </Select>
             {term}
             {term && termPeriods.find((a) => a.key === term)?.value}
