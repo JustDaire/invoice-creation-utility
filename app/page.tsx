@@ -163,8 +163,23 @@ export default function Home() {
     subtotal: 0.0,
     total: 0.0,
   });
-  const [term, setTerm] = React.useState<Selection>(new Set([]));
+  const renderTotal = (
+    item: InvoiceItem,
+    columnKey: React.Key,
+    index: number
+  ) => {
+    const total = item.rate * item.quantity;
 
+    console.log("calculating total");
+
+    // setFormData({
+    //   ...formData,
+    //   total,
+    // });
+    UpdateCell(total, Number(item.key), "amount");
+
+    return total;
+  };
 
   /**
    * Renders a cell in the invoice table based on the column key.
@@ -189,6 +204,23 @@ export default function Home() {
             >
               <MdDelete size={24} />
             </Button>
+          );
+        case "amount":
+          // return cellValue;
+          // return renderTotal(invoiceItem, columnKey, index);
+          return (
+            <>
+              {cellValue}
+              {invoiceItem[columnKey as keyof InvoiceItem]}
+              <TableCellInput
+                type={getInputType(columnKey)}
+                value={String(cellValue)}
+                onChange={(newValue) => {
+                  // Logic to update local state with the new value
+                  UpdateCell(newValue, index, columnKey);
+                }}
+              />
+            </>
           );
         default:
           return (
