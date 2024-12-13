@@ -2,6 +2,12 @@
 
 import type { Selection } from "@nextui-org/react";
 
+import {
+  DateValue,
+  parseDate,
+  getLocalTimeZone,
+} from "@internationalized/date";
+import { useDateFormatter } from "@react-aria/i18n";
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
 import {
@@ -163,7 +169,27 @@ export default function Home() {
     subtotal: 0.0,
     total: 0.0,
   });
+  const [date, setDate] = React.useState<DateValue | null>(null);
   const [term, setTerm] = React.useState<string>("");
+  const [dueDate, setDueDate] = React.useState<DateValue | null>(null);
+  let formatter = useDateFormatter({ dateStyle: "full" });
+
+  function getDate() {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+
+    const formattedDate = formatter.format(today);
+
+    console.log("formattedDate:", formattedDate);
+
+    // {date ? formatter.format(date.toDate(getLocalTimeZone())) : "--"}
+    console.log("Date:", today);
+
+    return `${month}/${date}/${year}`;
+  }
+
   const renderTotal = (
     item: InvoiceItem,
     columnKey: React.Key,
@@ -512,7 +538,22 @@ export default function Home() {
           </div>
           {/* Invoice Date Picker */}
           <div className="grid gap-4">
-            <DatePicker className="" label="Date" />
+            <DatePicker
+              aria-label="Date"
+              label="Date"
+              value={date}
+              onChange={(e) => {
+                setDate(e);
+                setFormData({
+                  ...formData,
+                  invoiceDate: e!.toString(),
+                });
+              }}
+            />
+            <p className="text-default-500 text-sm">
+              Selected date:{" "}
+              {date ? formatter.format(date.toDate(getLocalTimeZone())) : "--"}
+            </p>
           </div>
           {/* Terms Selector */}
           <div className="grid gap-4">
