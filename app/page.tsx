@@ -163,6 +163,7 @@ export default function Home() {
     subtotal: 0.0,
     total: 0.0,
   });
+  const [term, setTerm] = React.useState<string>("");
   const renderTotal = (
     item: InvoiceItem,
     columnKey: React.Key,
@@ -517,15 +518,18 @@ export default function Home() {
           <div className="grid gap-4">
             <Select
               aria-label="Terms"
-              items={termPeriods}
               label="Terms"
-              placeholder="Select a term"
-              selectedKeys={term}
-              onSelectionChange={setTerm}
+              selectedKeys={[term]}
+              variant="bordered"
+              onChange={(e) => {
+                setTerm(e.target.value);
+              }}
             >
-              {(term) => <SelectItem>{term.label}</SelectItem>}
+              {termPeriods.map((animal) => (
+                <SelectItem key={animal.key}>{animal.label}</SelectItem>
+              ))}
             </Select>
-            {term.size !== 0 && term !== "none" ? (
+            {term && term !== "none" ? (
               <DatePicker className="" label="Date" />
             ) : null}
             {/* {term && termPeriods.find((a) => a.key === term)?.value} */}
