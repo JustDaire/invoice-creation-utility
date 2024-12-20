@@ -1,7 +1,5 @@
 "use client";
 
-import type { Selection } from "@nextui-org/react";
-
 import {
   DateValue,
   parseDate,
@@ -17,7 +15,6 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  getKeyValue,
 } from "@nextui-org/table";
 import React, { Key, useState } from "react";
 import { Divider } from "@nextui-org/divider";
@@ -282,10 +279,23 @@ export default function Home() {
       (invoiceItem as any)[columnKey as string] = value;
     }
 
+    // This gets updated in the UI
+    formData.company.name = "test";
+    // But this doesnt?????
+    formData.invoiceItems[0].amount = 3;
+
+
+    // formData.company.phone = "3";
+    invoiceItem!.amount = invoiceItem!.rate * invoiceItem!.quantity;
+    formData.company.phone = String(invoiceItem!.amount);
+
+    console.log("formData", formData);
+
     setFormData({
       ...formData,
       invoiceItems: invoiceItemsUpdated,
     });
+    // setFormData(formData);
   };
 
   /**
@@ -542,7 +552,7 @@ export default function Home() {
               aria-label="Date"
               label="Date"
               value={date}
-              onChange={(e) => {
+              onChange={(e: React.SetStateAction<DateValue | null>) => {
                 setDate(e);
                 setFormData({
                   ...formData,
