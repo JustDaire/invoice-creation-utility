@@ -224,7 +224,7 @@ export default function Home() {
               aria-label="Delete"
               color="danger"
               isDisabled={formData.invoiceItems.length === 1}
-              onClick={() => removeRow(Number(invoiceItem.key))}
+              onPress={() => removeRow(Number(invoiceItem.key))}
             >
               <MdDelete size={24} />
             </Button>
@@ -615,7 +615,7 @@ export default function Home() {
               isIconOnly
               aria-label="Add"
               color="default"
-              onClick={addRow}
+              onPress={addRow}
             >
               <MdAdd size={24} />
             </Button>
