@@ -402,11 +402,11 @@ export default function Home() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
+    <section className="flex flex-col md:items-center justify-center gap-4 py-8 md:py-10">
       {/* Main grid */}
       {/*   */}
       <form className="grid gap-4" onSubmit={generateInvoice}>
-        <div className="grid grid-cols-2 gap-4 flex items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
           {/* Issuer details */}
           <div className="grid gap-4">
             <Input
@@ -548,7 +548,7 @@ export default function Home() {
           </div>
         </div>
         <Divider />
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Invoice Number */}
           <div className="grid gap-4">
             <Input
@@ -635,7 +635,7 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="grid gap-4">
                     <Input
                       aria-label="Rate"
