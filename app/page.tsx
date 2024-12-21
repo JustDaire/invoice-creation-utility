@@ -352,6 +352,24 @@ export default function Home() {
     console.log("formData", formData);
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, type: string) => {
+
+    const newInvoiceItems = [...formData.invoiceItems];
+    const invoiceItem = newInvoiceItems.find((a) => a.key === String(index));
+    if (invoiceItem) {
+      (invoiceItem as any)[type as keyof InvoiceItem] = e.target.value;
+      if (type === "rate" || type === "quantity") {
+        invoiceItem!.amount = invoiceItem!.rate * invoiceItem!.quantity;
+      }
+      console.log("invoiceItem", invoiceItem);
+    }
+
+    setFormData({
+      ...formData,
+      invoiceItems: newInvoiceItems,
+    });
+  };
+
   /**
    * Retrieves the input type for a given key from the columns array.
    *
@@ -570,6 +588,7 @@ export default function Home() {
             <Select
               aria-label="Terms"
               label="Terms"
+              id="terms"
               selectedKeys={[term]}
               variant="bordered"
               onChange={(e) => {
@@ -586,31 +605,71 @@ export default function Home() {
             {/* {term && termPeriods.find((a) => a.key === term)?.value} */}
           </div>
         </div>
-        <Divider />
         {/* Invoice items */}
+        {formData.invoiceItems.map((item) => (
+          <>
+            <Divider />
+            <div className="flex space-x-4">
+              <div className="flex-none gap-4">
+                <Button
+                  isIconOnly
+                  aria-label="Delete"
+                  color="danger"
+                  isDisabled={formData.invoiceItems.length === 1}
+                  onPress={() => removeRow(Number(item.key))}
+                >
+                  <MdDelete size={24} />
+                </Button>
+              </div>
+              <div className="flex-auto space-y-4 gap-4">
+                <div className="grid grid-cols-1 gap-4">
+                  <div className="grid gap-4">
+                    <Input
+                      aria-label="Description"
+                      label="Description"
+                      type="text"
+                      value={item.description}
+                      onChange={(e) => {
+                        handleInputChange(e, Number(item.key), "description");
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="grid gap-4">
+                    <Input
+                      aria-label="Rate"
+                      label="Rate"
+                      type="number"
+                      value={String(item.rate)}
+                      onChange={(e) => {
+                        handleInputChange(e, Number(item.key), "rate");
+                      }}
+                    />
+                  </div>
+                  <div className="grid gap-4">
+                    <Input
+                      aria-label="Quantity"
+                      label="Quantity"
+                      type="number"
+                      value={String(item.quantity)}
+                      onChange={(e) => {
+                        handleInputChange(e, Number(item.key), "quantity");
+                      }}
+                    />
+                  </div>
+                  <div className="grid gap-4 justify-self-end self-center px-4">
+                    €{item.amount}.00
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <Divider /> */}
+          </>
+        ))}
+        {/* Add invoice item button */}
         <div className="grid grid-cols-1 gap-4">
           <div className="grid gap-4">
-            <Table removeWrapper>
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn key={column.key} aria-label={column.label}>
-                    {column.label}
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody items={formData.invoiceItems}>
-                {(item) => (
-                  <TableRow key={item.key}>
-                    {(columnKey) => (
-                      <TableCell>
-                        {renderCell(item, columnKey, Number(item.key))}
-                      </TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-
             <Button
               isIconOnly
               aria-label="Add"
@@ -619,9 +678,9 @@ export default function Home() {
             >
               <MdAdd size={24} />
             </Button>
+            <Divider />
           </div>
         </div>
-        <Divider />
         {/* Subtotals */}
         <div className="flex justify-end gap-4">
           <div className="gap-4">
