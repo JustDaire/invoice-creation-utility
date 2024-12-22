@@ -578,10 +578,6 @@ export default function Home() {
                 });
               }}
             />
-            <p className="text-default-500 text-sm">
-              Selected date:{" "}
-              {date ? formatter.format(date.toDate(getLocalTimeZone())) : "--"}
-            </p>
           </div>
           {/* Terms Selector */}
           <div className="grid gap-4">
