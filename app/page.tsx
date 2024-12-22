@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CalendarDate,
   DateValue,
   parseDate,
   getLocalTimeZone,
@@ -204,6 +205,18 @@ export default function Home() {
 
     return total;
   };
+
+  const termSelection = (term: string) => {
+    const termNumber = termPeriods.find((a) => a.key === term)?.value;
+    if (term) {
+      const invoiceDate = new CalendarDate(date!.year, date!.month, date!.day);
+      const invoiceDueDate = invoiceDate.add({days: Number(termNumber)});
+      setDueDate(invoiceDueDate);
+    }
+
+    setTerm(term.toString());
+
+  }
 
   /**
    * Renders a cell in the invoice table based on the column key.
@@ -588,17 +601,29 @@ export default function Home() {
               selectedKeys={[term]}
               variant="bordered"
               onChange={(e) => {
-                setTerm(e.target.value);
+                termSelection(e.target.value);
               }}
+              isDisabled={!date}
             >
-              {termPeriods.map((animal) => (
-                <SelectItem key={animal.key}>{animal.label}</SelectItem>
+              {termPeriods.map((term) => (
+                <SelectItem aria-label={term.label} key={term.key}>{term.label}</SelectItem>
               ))}
             </Select>
             {term && term !== "none" ? (
-              <DatePicker className="" label="Date" />
+              <DatePicker
+                aria-label="Date"
+                label="Due Date"
+                value={dueDate}
+                onChange={(e: React.SetStateAction<DateValue | null>) => {
+                  setDueDate(e);
+                  setFormData({
+                    ...formData,
+                    invoiceDueDate: e!.toString(),
+                  });
+                }}
+                isDisabled={term !== "custom"}
+              />
             ) : null}
-            {/* {term && termPeriods.find((a) => a.key === term)?.value} */}
           </div>
         </div>
         {/* Invoice items */}
