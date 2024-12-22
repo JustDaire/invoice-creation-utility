@@ -7,7 +7,7 @@ import {
 import { useDateFormatter } from "@react-aria/i18n";
 import { Button } from "@nextui-org/button";
 import { Input, Textarea } from "@nextui-org/input";
-import React, { Key, useState } from "react";
+import React, { Key, useMemo, useState } from "react";
 import { Divider } from "@nextui-org/divider";
 import { Select, SelectItem } from "@nextui-org/select";
 import { DatePicker } from "@nextui-org/date-picker";
@@ -133,6 +133,22 @@ export default function Home() {
 
     return total;
   };
+
+  const calculateTotal = () => {
+    const invoiceItems = formData.invoiceItems.map((a) => a.amount);
+    const invoiceTotal = invoiceItems.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    console.log(invoiceTotal);
+    setFormData({
+      ...formData,
+      total: invoiceTotal,
+    });
+    return invoiceTotal;
+  };
+
+  const invoiceTotalCalculated = useMemo(
+    () => calculateTotal(),
+    [formData.invoiceItems]
+  );
 
   const termSelection = (term: string) => {
     const termNumber = termPeriods.find((a) => a.key === term)?.value;
@@ -638,7 +654,8 @@ export default function Home() {
           </div>
           <div className="gap-4">
             <p>€{formData.subtotal}</p>
-            <p>€{formData.total}</p>
+            {/* <p>€{formData.total}</p> */}
+            <p>€{invoiceTotalCalculated}</p>
           </div>
         </div>
         <Divider />
