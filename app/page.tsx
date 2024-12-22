@@ -574,7 +574,7 @@ export default function Home() {
         {formData.invoiceItems.map((item) => (
           <>
             <Divider />
-            <div className="flex space-x-4">
+            <div className="flex space-x-4" key={item.key}>
               <div className="flex-none gap-4">
                 <Button
                   isIconOnly
