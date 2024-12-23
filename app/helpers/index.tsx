@@ -3,21 +3,11 @@ import jsPDF from "jspdf";
 import autoTable from 'jspdf-autotable'
 
 export function generatePdf(data: InvoiceForm) {
-    console.log("Generating invoice:", JSON.stringify(data));
-    console.log("Generating invoice:", data);
-    console.log("Company:", Object.values(data.company).filter(a => a !== ""));
 
     const companyColumn = Object.values(data.company).filter(a => a !== "");
     const clientColumn = Object.values(data.client).filter(a => a !== "");
 
     const pdf = new jsPDF();
-    // pdf.text('Hello world!', 10, 10);
-    // pdf.table(10, 10, [companyColumn, clientColumn], ['company', 'client'], { autoSize: true });
-    // pdf.autoTable({
-    //     body: body,
-    //     startY: 70,
-    //     theme: 'grid',
-    //              })
 
 
     const docWidth = pdf.internal.pageSize.width;
@@ -38,10 +28,8 @@ export function generatePdf(data: InvoiceForm) {
     };
 
     const addFooters = (doc: jsPDF) => {
-        // const pageCount = doc.internal.getNumberOfPages()
         const pageCount = doc.getNumberOfPages()
       
-        // doc.setFont('helvetica', 'italic')
         doc.setFontSize(8)
         for (var i = 1; i <= pageCount; i++) {
           doc.setPage(i)
@@ -49,6 +37,7 @@ export function generatePdf(data: InvoiceForm) {
           doc.text('Legal boilerplate that will be ignored by everyone', 10, 287, {
             align: 'left'
           })
+          
           doc.text('Page ' + String(i) + ' of ' + String(pageCount), doc.internal.pageSize.width - 10, 287, {
             align: 'right'
           })
@@ -92,9 +81,6 @@ export function generatePdf(data: InvoiceForm) {
     pdf.text("Invoice date: " + data.invoiceDate, docWidth - 10, clientHeightStart, {align: "right"});
     clientHeightStart += pdfConfig.lineHeight;
     pdf.text("Payment due date: " + data.invoiceDueDate, docWidth - 10, clientHeightStart, {align: "right"});
-
-
-    // pdf.table(10, 10, [companyColumn, clientColumn], ['company', 'client'], { autoSize: true });
 
     function tableRow(data: any) {
         return [data.description, data.quantity, data.unitPrice, data.total];
