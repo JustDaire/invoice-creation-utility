@@ -625,6 +625,7 @@ export default function Home() {
                     <Input
                       aria-label="Description"
                       label="Description"
+                      size="sm"
                       type="text"
                       value={item.description}
                       onChange={(e) => {
@@ -638,6 +639,7 @@ export default function Home() {
                     <Input
                       aria-label="Rate"
                       label="Rate"
+                      size="sm"
                       type="number"
                       value={String(item.unitPrice)}
                       onChange={(e) => {
@@ -649,6 +651,7 @@ export default function Home() {
                     <Input
                       aria-label="Quantity"
                       label="Quantity"
+                      size="sm"
                       type="number"
                       value={String(item.quantity)}
                       onChange={(e) => {
