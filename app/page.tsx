@@ -85,10 +85,10 @@ const invoiceForm: InvoiceForm = {
 
 const invoiceFormTest = {
   invoiceNumber: "INV0001",
-  invoiceDate: "",
-  invoiceDueDate: "",
+  invoiceDate: String(today(getLocalTimeZone())),
+  invoiceDueDate: String(today(getLocalTimeZone()).add({days: 7})),
   company: {
-    name: "MegaCorp",
+    name: "SmallCorp",
     email: "me@smallcompany.com",
     phone: "978123456",
     address: "Dublin, Ireland",
@@ -104,12 +104,26 @@ const invoiceFormTest = {
     {
       key: "1",
       description: "Item 1",
-      unitPrice: 0,
+      unitPrice: 10,
+      quantity: 3,
+      total: 30,
+    },
+    {
+      key: "2",
+      description: "Item 2",
+      unitPrice: 20,
+      quantity: 2,
+      total: 40,
+    },
+    {
+      key: "3",
+      description: "Item 3",
+      unitPrice: 30,
       quantity: 1,
-      total: 0,
+      total: 30,
     },
   ],
-  description: "",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
   taxtRate: 0,
   subtotal: 0.0,
   total: 0.0,
@@ -119,8 +133,9 @@ export default function Home() {
   let defaultDate = today(getLocalTimeZone());
   const [formData, setFormData] = useState(invoiceFormTest);
   const [date, setDate] = React.useState<DateValue | null>(defaultDate);
-  const [term, setTerm] = React.useState<string>("");
-  const [dueDate, setDueDate] = React.useState<DateValue | null>(null);
+  const [term, setTerm] = React.useState<string>("7days");
+  // const [term, setTerm] = React.useState<string>("");
+  const [dueDate, setDueDate] = React.useState<DateValue | null>(today(getLocalTimeZone()).add({days: 7}));
   let formatter = useDateFormatter({ dateStyle: "full" });
 
   function getDate() {
