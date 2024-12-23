@@ -3,6 +3,8 @@
 import {
   CalendarDate,
   DateValue,
+  getLocalTimeZone,
+  today,
 } from "@internationalized/date";
 import { useDateFormatter } from "@react-aria/i18n";
 import { Button } from "@nextui-org/button";
@@ -13,27 +15,12 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { DatePicker } from "@nextui-org/date-picker";
 import { MdAdd, MdDelete } from "react-icons/md";
 import { termPeriods } from "./data";
+import { InvoiceForm, InvoiceItem } from "@/types";
 
 type Column = {
   key: string;
   label: string;
   type: "text" | "number";
-};
-
-type Comppany = {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  vat_number: string;
-};
-
-type InvoiceItem = {
-  key: string;
-  description: string;
-  rate: number;
-  quantity: number;
-  amount: number;
 };
 
 const columns = [
@@ -64,38 +51,74 @@ const columns = [
   },
 ];
 
+const invoiceForm: InvoiceForm = {
+  invoiceNumber: "INV0001",
+  invoiceDate: "",
+  invoiceDueDate: "",
+  company: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+    vat_number: "",
+  },
+  client: {
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  },
+  items: [
+    {
+      key: "1",
+      description: "Item 1",
+      unitPrice: 0,
+      quantity: 1,
+      total: 0,
+    },
+  ],
+  description: "",
+  taxtRate: 0,
+  subtotal: 0.0,
+  total: 0.0,
+};
+
+const invoiceFormTest = {
+  invoiceNumber: "INV0001",
+  invoiceDate: "",
+  invoiceDueDate: "",
+  company: {
+    name: "MegaCorp",
+    email: "me@smallcompany.com",
+    phone: "978123456",
+    address: "Dublin, Ireland",
+    vat_number: "",
+  },
+  client: {
+    name: "MegaCorp",
+    email: "billing@megacorp.com",
+    phone: "645174526",
+    address: "California, USA",
+  },
+  items: [
+    {
+      key: "1",
+      description: "Item 1",
+      unitPrice: 0,
+      quantity: 1,
+      total: 0,
+    },
+  ],
+  description: "",
+  taxtRate: 0,
+  subtotal: 0.0,
+  total: 0.0,
+};
+
 export default function Home() {
-  const [formData, setFormData] = useState({
-    invoiceNumber: "INV0001",
-    invoiceDate: "",
-    invoiceDueDate: "",
-    company: {
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-      vat_number: "",
-    },
-    client: {
-      name: "",
-      email: "",
-      phone: "",
-      address: "",
-    },
-    invoiceItems: [
-      {
-        key: "1",
-        description: "Item 1",
-        rate: 0,
-        quantity: 1,
-        amount: 0,
-      },
-    ],
-    description: "",
-    subtotal: 0.0,
-    total: 0.0,
-  });
-  const [date, setDate] = React.useState<DateValue | null>(null);
+  let defaultDate = today(getLocalTimeZone());
+  const [formData, setFormData] = useState(invoiceFormTest);
+  const [date, setDate] = React.useState<DateValue | null>(defaultDate);
   const [term, setTerm] = React.useState<string>("");
   const [dueDate, setDueDate] = React.useState<DateValue | null>(null);
   let formatter = useDateFormatter({ dateStyle: "full" });
@@ -121,7 +144,7 @@ export default function Home() {
     columnKey: React.Key,
     index: number
   ) => {
-    const total = item.rate * item.quantity;
+    const total = item.unitPrice * item.quantity;
 
     console.log("calculating total");
 
@@ -129,13 +152,13 @@ export default function Home() {
     //   ...formData,
     //   total,
     // });
-    UpdateCell(total, Number(item.key), "amount");
+    UpdateCell(total, Number(item.key), "total");
 
     return total;
   };
 
   const calculateTotal = () => {
-    const invoiceItems = formData.invoiceItems.map((a) => a.amount);
+    const invoiceItems = formData.items.map((a) => a.total);
     const invoiceTotal = invoiceItems.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     console.log(invoiceTotal);
     setFormData({
@@ -147,7 +170,7 @@ export default function Home() {
 
   const invoiceTotalCalculated = useMemo(
     () => calculateTotal(),
-    [formData.invoiceItems]
+    [formData.items]
   );
 
   const termSelection = (term: string) => {
@@ -180,7 +203,7 @@ export default function Home() {
               isIconOnly
               aria-label="Delete"
               color="danger"
-              isDisabled={formData.invoiceItems.length === 1}
+              isDisabled={formData.items.length === 1}
               onPress={() => removeRow(Number(invoiceItem.key))}
             >
               <MdDelete size={24} />
@@ -227,7 +250,7 @@ export default function Home() {
    * @param columnKey - The key of the column to be updated.
    */
   const UpdateCell = (value: any, index: number, columnKey: Key) => {
-    const invoiceItemsUpdated = [...formData.invoiceItems];
+    const invoiceItemsUpdated = [...formData.items];
     const invoiceItem = invoiceItemsUpdated.find(
       (a) => a.key === String(index)
     );
@@ -236,21 +259,16 @@ export default function Home() {
       (invoiceItem as any)[columnKey as string] = value;
     }
 
-    // This gets updated in the UI
-    formData.company.name = "test";
-    // But this doesnt?????
-    formData.invoiceItems[0].amount = 3;
-
 
     // formData.company.phone = "3";
-    invoiceItem!.amount = invoiceItem!.rate * invoiceItem!.quantity;
-    formData.company.phone = String(invoiceItem!.amount);
+    invoiceItem!.total = invoiceItem!.unitPrice * invoiceItem!.quantity;
+    formData.company.phone = String(invoiceItem!.total);
 
     console.log("formData", formData);
 
     setFormData({
       ...formData,
-      invoiceItems: invoiceItemsUpdated,
+      items: invoiceItemsUpdated,
     });
     // setFormData(formData);
   };
@@ -263,20 +281,20 @@ export default function Home() {
    */
   const addRow = () => {
     const newRow = {
-      key: String(formData.invoiceItems.length + 1),
+      key: String(formData.items.length + 1),
       description: "",
-      rate: 0,
+      unitPrice: 0,
       quantity: 1,
-      amount: 0,
+      total: 0,
     };
 
-    const array = formData.invoiceItems;
+    const array = formData.items;
 
     array.push(newRow);
 
     setFormData({
       ...formData,
-      invoiceItems: array,
+      items: array,
     });
   };
 
@@ -289,13 +307,13 @@ export default function Home() {
    * `formData` state, and updates the state with the new array.
    */
   const removeRow = (rowIndex: number) => {
-    const array = formData.invoiceItems.filter(
+    const array = formData.items.filter(
       (a) => a.key !== String(rowIndex)
     );
 
     setFormData({
       ...formData,
-      invoiceItems: array,
+      items: array,
     });
   };
 
@@ -311,19 +329,19 @@ export default function Home() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, type: string) => {
 
-    const newInvoiceItems = [...formData.invoiceItems];
+    const newInvoiceItems = [...formData.items];
     const invoiceItem = newInvoiceItems.find((a) => a.key === String(index));
     if (invoiceItem) {
       (invoiceItem as any)[type as keyof InvoiceItem] = e.target.value;
       if (type === "rate" || type === "quantity") {
-        invoiceItem!.amount = invoiceItem!.rate * invoiceItem!.quantity;
+        invoiceItem!.total = invoiceItem!.unitPrice * invoiceItem!.quantity;
       }
       console.log("invoiceItem", invoiceItem);
     }
 
     setFormData({
       ...formData,
-      invoiceItems: newInvoiceItems,
+      items: newInvoiceItems,
     });
   };
 
@@ -571,7 +589,7 @@ export default function Home() {
           </div>
         </div>
         {/* Invoice items */}
-        {formData.invoiceItems.map((item) => (
+        {formData.items.map((item) => (
           <>
             <Divider />
             <div className="flex space-x-4" key={item.key}>
@@ -580,7 +598,7 @@ export default function Home() {
                   isIconOnly
                   aria-label="Delete"
                   color="danger"
-                  isDisabled={formData.invoiceItems.length === 1}
+                  isDisabled={formData.items.length === 1}
                   onPress={() => removeRow(Number(item.key))}
                 >
                   <MdDelete size={24} />
@@ -606,7 +624,7 @@ export default function Home() {
                       aria-label="Rate"
                       label="Rate"
                       type="number"
-                      value={String(item.rate)}
+                      value={String(item.unitPrice)}
                       onChange={(e) => {
                         handleInputChange(e, Number(item.key), "rate");
                       }}
@@ -624,7 +642,7 @@ export default function Home() {
                     />
                   </div>
                   <div className="grid gap-4 justify-self-end self-center px-4">
-                    €{item.amount}.00
+                    €{item.total}.00
                   </div>
                 </div>
               </div>
