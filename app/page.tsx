@@ -139,28 +139,9 @@ export default function Home() {
   const [dueDate, setDueDate] = React.useState<DateValue | null>(today(getLocalTimeZone()).add({days: 7}));
   let formatter = useDateFormatter({ dateStyle: "full" });
 
-  const renderTotal = (
-    item: InvoiceItem,
-    columnKey: React.Key,
-    index: number
-  ) => {
-    const total = item.unitPrice * item.quantity;
-
-    console.log("calculating total");
-
-    // setFormData({
-    //   ...formData,
-    //   total,
-    // });
-    UpdateCell(total, Number(item.key), "total");
-
-    return total;
-  };
-
   const calculateTotal = () => {
     const invoiceItems = formData.items.map((a) => a.total);
     const invoiceTotal = invoiceItems.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    console.log(invoiceTotal);
     setFormData({
       ...formData,
       total: invoiceTotal,
@@ -182,95 +163,6 @@ export default function Home() {
     }
 
     setTerm(term.toString());
-
-  }
-
-  /**
-   * Renders a cell in the invoice table based on the column key.
-   *
-   * @param {InvoiceItem} invoiceItem - The invoice item data for the current row.
-   * @param {React.Key} columnKey - The key of the column to render.
-   * @returns {React.ReactNode} The rendered cell content.
-   */
-  const renderCell = React.useCallback(
-    (invoiceItem: InvoiceItem, columnKey: React.Key, index: number) => {
-      const cellValue = invoiceItem[columnKey as keyof InvoiceItem];
-
-      switch (columnKey) {
-        case "actions":
-          return (
-            <Button
-              isIconOnly
-              aria-label="Delete"
-              color="danger"
-              isDisabled={formData.items.length === 1}
-              onPress={() => removeRow(Number(invoiceItem.key))}
-            >
-              <MdDelete size={24} />
-            </Button>
-          );
-        case "amount":
-          // return cellValue;
-          // return renderTotal(invoiceItem, columnKey, index);
-          return (
-            <>
-              {cellValue}
-              {invoiceItem[columnKey as keyof InvoiceItem]}
-              <TableCellInput
-                type={getInputType(columnKey)}
-                value={String(cellValue)}
-                onChange={(newValue) => {
-                  // Logic to update local state with the new value
-                  UpdateCell(newValue, index, columnKey);
-                }}
-              />
-            </>
-          );
-        default:
-          return (
-            <TableCellInput
-              type={getInputType(columnKey)}
-              value={String(cellValue)}
-              onChange={(newValue) => {
-                // Logic to update local state with the new value
-                UpdateCell(newValue, index, columnKey);
-              }}
-            />
-          );
-      }
-    },
-    []
-  );
-
-  /**
-   * Updates a specific cell in the invoice items form data.
-   *
-   * @param value - The new value to be set in the cell.
-   * @param index - The index of the invoice item to be updated.
-   * @param columnKey - The key of the column to be updated.
-   */
-  const UpdateCell = (value: any, index: number, columnKey: Key) => {
-    const invoiceItemsUpdated = [...formData.items];
-    const invoiceItem = invoiceItemsUpdated.find(
-      (a) => a.key === String(index)
-    );
-
-    if (invoiceItem) {
-      (invoiceItem as any)[columnKey as string] = value;
-    }
-
-
-    // formData.company.phone = "3";
-    invoiceItem!.total = invoiceItem!.unitPrice * invoiceItem!.quantity;
-    formData.company.phone = String(invoiceItem!.total);
-
-    console.log("formData", formData);
-
-    setFormData({
-      ...formData,
-      items: invoiceItemsUpdated,
-    });
-    // setFormData(formData);
   };
 
   /**
@@ -324,7 +216,6 @@ export default function Home() {
    */
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("formData", formData);
     generatePdf(formData);
   };
 
@@ -337,44 +228,12 @@ export default function Home() {
       if (type === "rate" || type === "quantity") {
         invoiceItem!.total = invoiceItem!.unitPrice * invoiceItem!.quantity;
       }
-      console.log("invoiceItem", invoiceItem);
     }
 
     setFormData({
       ...formData,
       items: newInvoiceItems,
     });
-  };
-
-  /**
-   * Retrieves the input type for a given key from the columns array.
-   *
-   * @param {Key} key - The key to search for in the columns array.
-   * @returns {string} - The input type associated with the key, or "" if the key is not found.
-   */
-  const getInputType = (key: Key) => {
-    return columns.find((a) => a.key === key)?.type ?? "";
-  };
-
-  const TableCellInput = ({
-    value,
-    onChange,
-    type,
-  }: {
-    value: string;
-    onChange: (value: string) => void;
-    type?: string;
-  }) => {
-    const [inputValue, setInputValue] = React.useState(value);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(e.target.value);
-      onChange(e.target.value);
-    };
-
-    return (
-      <Input type={type} value={inputValue} onChange={handleInputChange} />
-    );
   };
 
   return (
