@@ -15,6 +15,7 @@ import { Select, SelectItem } from "@nextui-org/select";
 import { DatePicker } from "@nextui-org/date-picker";
 import { MdAdd, MdDelete } from "react-icons/md";
 import { termPeriods } from "./data";
+import { generatePdf } from "./helpers";
 import { InvoiceForm, InvoiceItem } from "@/types";
 
 type Column = {
@@ -324,6 +325,7 @@ export default function Home() {
   const generateInvoice = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     console.log("formData", formData);
+    generatePdf(formData);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number, type: string) => {
