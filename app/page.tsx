@@ -138,22 +138,6 @@ export default function Home() {
   const [dueDate, setDueDate] = React.useState<DateValue | null>(today(getLocalTimeZone()).add({days: 7}));
   let formatter = useDateFormatter({ dateStyle: "full" });
 
-  function getDate() {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-
-    const formattedDate = formatter.format(today);
-
-    console.log("formattedDate:", formattedDate);
-
-    // {date ? formatter.format(date.toDate(getLocalTimeZone())) : "--"}
-    console.log("Date:", today);
-
-    return `${month}/${date}/${year}`;
-  }
-
   const renderTotal = (
     item: InvoiceItem,
     columnKey: React.Key,
