@@ -87,7 +87,7 @@ const invoiceForm: InvoiceForm = {
 const invoiceFormTest = {
   invoiceNumber: "INV0001",
   invoiceDate: String(today(getLocalTimeZone())),
-  invoiceDueDate: String(today(getLocalTimeZone()).add({days: 7})),
+  invoiceDueDate: String(today(getLocalTimeZone()).add({ days: 7 })),
   company: {
     name: "SmallCorp",
     email: "me@smallcompany.com",
@@ -136,7 +136,7 @@ export default function Home() {
   const [date, setDate] = React.useState<DateValue | null>(defaultDate);
   const [term, setTerm] = React.useState<string>("7days");
   // const [term, setTerm] = React.useState<string>("");
-  const [dueDate, setDueDate] = React.useState<DateValue | null>(today(getLocalTimeZone()).add({days: 7}));
+  const [dueDate, setDueDate] = React.useState<DateValue | null>(today(getLocalTimeZone()).add({ days: 7 }));
   let formatter = useDateFormatter({ dateStyle: "full" });
 
   const calculateTotal = () => {
@@ -158,7 +158,7 @@ export default function Home() {
     const termNumber = termPeriods.find((a) => a.key === term)?.value;
     if (term) {
       const invoiceDate = new CalendarDate(date!.year, date!.month, date!.day);
-      const invoiceDueDate = invoiceDate.add({days: Number(termNumber)});
+      const invoiceDueDate = invoiceDate.add({ days: Number(termNumber) });
       setDueDate(invoiceDueDate);
     }
 
